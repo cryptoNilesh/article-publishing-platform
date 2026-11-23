@@ -2,6 +2,10 @@
 pipeline {
     agent any
 
+    environment {
+        PATH+HOMEBREW = '/opt/homebrew/bin'
+    }
+
     stages {
 
         stage('Checkout') {
