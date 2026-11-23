@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        PATH+HOMEBREW = '/opt/homebrew/bin'
+        PATH = "/opt/homebrew/bin:${env.PATH}"
     }
 
     stages {
