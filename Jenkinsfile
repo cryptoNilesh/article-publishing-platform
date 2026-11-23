@@ -3,8 +3,8 @@ pipeline {
     agent any
 
     environment {
-        PATH = "/opt/homebrew/bin:${env.PATH}"
-    }
+    PATH = "/Users/mac/.nvm/versions/node/v26.13.0/bin:/opt/homebrew/bin:${env.PATH}"
+}
 
     stages {
 
