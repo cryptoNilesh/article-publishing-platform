@@ -1,0 +1,101 @@
+
+<section class="auth-page">
+  <div class="auth-card">
+
+    <div class="auth-brand">
+      <span class="brand-icon">A</span>
+      <span>ArticleSpace</span>
+    </div>
+
+    <div class="auth-heading">
+      <h1>Create your account</h1>
+      <p>Join our community and start sharing your stories.</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+
+      <div class="form-group">
+        <label for="displayName">Full Name</label>
+        <input
+          id="displayName"
+          type="text"
+          name="displayName"
+          [(ngModel)]="displayName"
+          placeholder="Enter your full name"
+          maxlength="80"
+          autocomplete="name"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          type="text"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="Choose a username"
+          minlength="3"
+          maxlength="30"
+          autocomplete="username"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="Enter your email address"
+          autocomplete="email"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Create a password (minimum 8 characters)"
+          minlength="8"
+          maxlength="100"
+          autocomplete="new-password"
+          required>
+      </div>
+
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="loading || registerForm.invalid">
+
+        @if (loading) {
+          Creating Account...
+        } @else {
+          Create Account
+        }
+
+      </button>
+
+    </form>
+
+    <div class="auth-bottom">
+      Already have an account?
+      <a routerLink="/login">Sign In</a>
+    </div>
+
+    <a routerLink="/" class="back-home">
+      ← Back to Home
+    </a>
+
+  </div>
+</section>

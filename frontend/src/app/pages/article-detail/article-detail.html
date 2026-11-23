@@ -1,0 +1,245 @@
+
+<section class="article-page">
+
+  @if (loading) {
+    <div class="state-message">
+      Loading article...
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="state-message error-message">
+      {{ errorMessage }}
+      <a routerLink="/">Go to Home</a>
+    </div>
+  }
+
+  @if (article && !loading) {
+    <article class="article-container">
+
+      <a routerLink="/" class="back-link">← Back to Articles</a>
+
+      <header class="article-header">
+        <span class="article-category">ARTICLE</span>
+
+        <h1>{{ article.title }}</h1>
+
+        @if (article.summary) {
+          <p class="article-summary">{{ article.summary }}</p>
+        }
+
+        <div class="article-meta">
+          <div class="author-avatar">
+            {{ getAuthorInitial(article.authorUsername) }}
+          </div>
+
+          <div class="author-details">
+            <strong>{{ article.authorUsername }}</strong>
+            <span>
+              {{ article.publishedAt || article.createdAt | date:'mediumDate' }}
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div class="article-content">
+        {{ article.content }}
+      </div>
+
+      @if (articleTags.length > 0) {
+        <div class="article-tags">
+          <strong>Tagged users:</strong>
+
+          @for (tag of articleTags; track tag.id) {
+            <span class="tag-chip">@{{ tag.taggedUsername }}</span>
+          }
+        </div>
+      }
+
+      <div class="article-actions">
+        <button
+          type="button"
+          class="like-button"
+          [class.liked]="liked"
+          (click)="toggleLike()"
+        >
+          {{ liked ? '♥ Liked' : '♡ Like' }}
+          <span>{{ likeCount }}</span>
+        </button>
+      </div>
+
+      <section class="comments-section">
+        <div class="section-heading">
+          <h2>Discussion</h2>
+          <span>{{ comments.length }} comments</span>
+        </div>
+
+        @if (isLoggedIn) {
+          <div class="comment-form">
+            <textarea
+              #commentInput
+              [value]="commentText"
+              (input)="commentText = commentInput.value"
+              placeholder="Share your thoughts... Use @username to tag someone."
+              rows="4"
+              maxlength="5000"
+            ></textarea>
+
+            @if (commentError) {
+              <p class="inline-error">{{ commentError }}</p>
+            }
+
+            <button
+              type="button"
+              class="primary-button"
+              [disabled]="submittingComment || !commentText.trim()"
+              (click)="addComment()"
+            >
+              {{ submittingComment ? 'Posting...' : 'Post Comment' }}
+            </button>
+          </div>
+        } @else {
+          <div class="login-prompt">
+            <p>Join the discussion and share your thoughts.</p>
+            <a routerLink="/login">Login to comment</a>
+          </div>
+        }
+
+        <div class="comment-list">
+          @for (comment of comments; track comment.id) {
+            <div class="comment-card">
+
+              <div class="comment-main">
+                <div class="comment-avatar">
+                  {{ getAuthorInitial(comment.authorUsername) }}
+                </div>
+
+                <div class="comment-body">
+                  <div class="comment-meta">
+                    <strong>{{ comment.authorUsername }}</strong>
+                    <span>{{ comment.createdAt | date:'medium' }}</span>
+                  </div>
+
+                  <p class="comment-content">{{ comment.content }}</p>
+
+                  <div class="comment-controls">
+                    <button
+                      type="button"
+                      class="text-button"
+                      (click)="toggleReplies(comment)"
+                    >
+                      {{ comment.showReplies ? 'Hide replies' : 'Replies' }}
+                    </button>
+
+                    @if (isLoggedIn) {
+                      <button
+                        type="button"
+                        class="text-button"
+                        (click)="comment.showReplies = true"
+                      >
+                        Reply
+                      </button>
+                    }
+                  </div>
+
+                  @if (isLoggedIn && comment.showReplies) {
+                    <div class="reply-form">
+                      <textarea
+                        #replyInput
+                        [value]="comment.replyText"
+                        (input)="comment.replyText = replyInput.value"
+                        placeholder="Write a reply... Use @username to tag someone."
+                        rows="2"
+                        maxlength="5000"
+                      ></textarea>
+
+                      <button
+                        type="button"
+                        class="primary-button small-button"
+                        [disabled]="comment.submittingReply || !comment.replyText.trim()"
+                        (click)="addReply(comment)"
+                      >
+                        {{ comment.submittingReply ? 'Sending...' : 'Send Reply' }}
+                      </button>
+                    </div>
+                  }
+
+                  @if (comment.showReplies && comment.repliesLoaded) {
+                    <div class="replies-list">
+                      @for (reply of comment.replies; track reply.id) {
+                        <div class="reply-card">
+                          <div class="comment-avatar reply-avatar">
+                            {{ getAuthorInitial(reply.authorUsername) }}
+                          </div>
+
+                          <div class="comment-body">
+                            <div class="comment-meta">
+                              <strong>{{ reply.authorUsername }}</strong>
+                              <span>{{ reply.createdAt | date:'medium' }}</span>
+                            </div>
+
+                            <p class="comment-content">{{ reply.content }}</p>
+
+                            <button
+                              type="button"
+                              class="text-button"
+                              (click)="toggleReplies(reply)"
+                            >
+                              {{ reply.showReplies ? 'Hide replies' : 'Replies' }}
+                            </button>
+
+                            @if (isLoggedIn && reply.showReplies) {
+                              <div class="reply-form">
+                                <textarea
+                                  #nestedReplyInput
+                                  [value]="reply.replyText"
+                                  (input)="reply.replyText = nestedReplyInput.value"
+                                  placeholder="Write a nested reply..."
+                                  rows="2"
+                                  maxlength="5000"
+                                ></textarea>
+
+                                <button
+                                  type="button"
+                                  class="primary-button small-button"
+                                  [disabled]="reply.submittingReply || !reply.replyText.trim()"
+                                  (click)="addReply(reply)"
+                                >
+                                  {{ reply.submittingReply ? 'Sending...' : 'Send Reply' }}
+                                </button>
+                              </div>
+                            }
+
+                            @if (reply.showReplies && reply.repliesLoaded) {
+                              <div class="nested-replies">
+                                @for (nested of reply.replies; track nested.id) {
+                                  <div class="nested-reply">
+                                    <strong>{{ nested.authorUsername }}</strong>
+                                    <p>{{ nested.content }}</p>
+                                  </div>
+                                }
+                              </div>
+                            }
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  }
+
+                </div>
+              </div>
+
+            </div>
+          } @empty {
+            <div class="empty-comments">
+              <p>No comments yet.</p>
+              <span>Be the first to start the discussion.</span>
+            </div>
+          }
+        </div>
+      </section>
+
+    </article>
+  }
+
+</section>

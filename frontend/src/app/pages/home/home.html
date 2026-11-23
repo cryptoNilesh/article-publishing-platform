@@ -1,0 +1,122 @@
+
+<section class="home-page">
+
+  <div class="hero-section">
+    <div class="hero-content">
+      <span class="hero-label">WELCOME TO ARTICLES­PACE</span>
+
+      <h1>
+        Ideas worth sharing.<br>
+        Stories worth reading.
+      </h1>
+
+      <p>
+        Discover insightful articles, share your knowledge,
+        and connect with a community of curious minds.
+      </p>
+
+      <a routerLink="/articles/create" class="hero-button">
+        Start Writing
+        <span>→</span>
+      </a>
+    </div>
+
+    <div class="hero-decoration">
+      <div class="decoration-card card-one">✍️</div>
+      <div class="decoration-card card-two">📖</div>
+      <div class="decoration-card card-three">💡</div>
+    </div>
+  </div>
+
+  <div class="feed-section">
+
+    <div class="section-heading">
+      <div>
+        <span class="section-label">EXPLORE</span>
+        <h2>Latest Articles</h2>
+        <p>Fresh perspectives from our community.</p>
+      </div>
+
+      <a routerLink="/articles/create" class="write-link">
+        Write an article +
+      </a>
+    </div>
+
+    @if (loading) {
+      <div class="state-message">
+        <div class="loader"></div>
+        <p>Loading articles...</p>
+      </div>
+    }
+
+    @if (!loading && errorMessage) {
+      <div class="state-message error-state">
+        <p>{{ errorMessage }}</p>
+        <button type="button" (click)="loadArticles()">
+          Try Again
+        </button>
+      </div>
+    }
+
+    @if (!loading && !errorMessage && articles.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">📝</div>
+        <h3>No articles published yet</h3>
+        <p>Be the first to share something interesting with the community.</p>
+        <a routerLink="/articles/create" class="empty-button">
+          Create First Article
+        </a>
+      </div>
+    }
+
+    @if (!loading && !errorMessage && articles.length > 0) {
+      <div class="article-grid">
+
+        @for (article of articles; track article.id) {
+          <article class="article-card">
+
+            <div class="article-card-top">
+              <span class="article-category">COMMUNITY STORY</span>
+              <span class="article-date">
+                {{ article.publishedAt | date:'mediumDate' }}
+              </span>
+            </div>
+
+            <h3>
+              <a [routerLink]="['/articles', article.slug]">
+                {{ article.title }}
+              </a>
+            </h3>
+
+            <p class="article-summary">
+              {{ article.summary || article.content }}
+            </p>
+
+            <div class="article-card-footer">
+              <div class="author-info">
+                <span class="author-avatar">
+                  {{ getAuthorInitial(article.authorUsername) }}
+                </span>
+
+                <div>
+                  <strong>{{ article.authorUsername }}</strong>
+                  <span>Article Author</span>
+                </div>
+              </div>
+
+              <a
+                [routerLink]="['/articles', article.slug]"
+                class="read-more">
+                Read Article →
+              </a>
+            </div>
+
+          </article>
+        }
+
+      </div>
+    }
+
+  </div>
+
+</section>

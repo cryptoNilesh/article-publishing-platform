@@ -1,0 +1,161 @@
+
+.create-page {
+  padding: 48px 20px 70px;
+}
+
+.create-container {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 36px;
+  background: #ffffff;
+  border: 1px solid #e8eaf0;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(20, 30, 60, 0.05);
+}
+
+.page-heading {
+  margin-bottom: 32px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 22px;
+  color: #526078;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back-link:hover {
+  color: #4f46e5;
+}
+
+.page-heading h1 {
+  margin: 0 0 10px;
+  color: #172033;
+  font-size: 32px;
+  font-weight: 750;
+}
+
+.page-heading p {
+  margin: 0;
+  color: #737d90;
+  line-height: 1.6;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  color: #273249;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 15px;
+  border: 1px solid #dce1e9;
+  border-radius: 9px;
+  outline: none;
+  color: #202b40;
+  background: #ffffff;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #6257e8;
+  box-shadow: 0 0 0 3px rgba(98, 87, 232, 0.1);
+}
+
+.form-group small {
+  color: #8992a3;
+  font-size: 12px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.form-actions button {
+  padding: 13px 22px;
+  border: none;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.form-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.draft-button {
+  color: #374151;
+  background: #edf0f5;
+}
+
+.publish-button {
+  color: #ffffff;
+  background: #5548df;
+}
+
+.publish-button:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.message {
+  padding: 13px 15px;
+  margin-bottom: 22px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.error-message {
+  color: #b42318;
+  background: #fef3f2;
+}
+
+.success-message {
+  color: #18794e;
+  background: #ecfdf3;
+}
+
+@media (max-width: 600px) {
+  .create-page {
+    padding: 25px 14px;
+  }
+
+  .create-container {
+    padding: 22px 17px;
+  }
+
+  .page-heading h1 {
+    font-size: 26px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}

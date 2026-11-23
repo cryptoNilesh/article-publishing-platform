@@ -1,0 +1,59 @@
+
+<header class="main-header">
+  <div class="navbar">
+
+    <a routerLink="/" class="brand">
+      <span class="brand-icon">A</span>
+      <span>{{ appName }}</span>
+    </a>
+
+    <nav class="nav-links">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Home
+      </a>
+
+      <a routerLink="/articles/create" routerLinkActive="active">
+        Write Article
+      </a>
+    </nav>
+
+    <div class="auth-links">
+
+      @if (currentUser; as user) {
+        <span class="welcome-user">
+          Hello, {{ user.displayName || user.username }}
+        </span>
+
+        <button
+          type="button"
+          class="logout-button"
+          (click)="logout()"
+        >
+          Logout
+        </button>
+      } @else {
+        <a routerLink="/login" class="login-link">
+          Login
+        </a>
+
+        <a routerLink="/register" class="register-button">
+          Get Started
+        </a>
+      }
+
+    </div>
+
+  </div>
+</header>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="main-footer">
+  <p>© 2026 ArticleSpace. Share ideas. Inspire others.</p>
+</footer>
